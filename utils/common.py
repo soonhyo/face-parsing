@@ -46,7 +46,7 @@ COLOR_LIST = [
 ]
 
 
-def vis_parsing_maps(image, segmentation_mask, save_image=False, save_path="result.png"):
+def vis_parsing_maps(image, segmentation_mask, save_image=False, target_classes=[], save_path="result.png"):
     # Create numpy arrays for image and segmentation mask
     image = np.array(image).copy().astype(np.uint8)
     segmentation_mask = segmentation_mask.copy().astype(np.uint8)
@@ -56,7 +56,11 @@ def vis_parsing_maps(image, segmentation_mask, save_image=False, save_path="resu
 
     num_classes = np.max(segmentation_mask)
 
+
     for class_index in range(1, num_classes + 1):
+        if target_classes is not []:
+            if not ATTRIBUTES[class_index] in target_classes:
+                continue
         class_pixels = np.where(segmentation_mask == class_index)
         segmentation_mask_color[class_pixels[0], class_pixels[1], :] = COLOR_LIST[class_index]
 
